@@ -1,3 +1,5 @@
+# This file overlays the edges detected in a RPiCam video feed onto the feed from a Lepton thermal camera, itself rescaled and positioned at the center of the FoV
+
 # import the necessary packages
 from __future__ import print_function
 #from pyimagesearch.basicmotiondetector import BasicMotionDetector
@@ -19,10 +21,6 @@ time.sleep(1.0)
 #pygame.display.set_mode((640,480), pygame.FULLSCREEN)
 #pygame.mouse.set_visible( False )
 
-# initialize the two motion detectors, along with the total
-# number of frames read
-#camMotion = BasicMotionDetector()
-#piMotion = BasicMotionDetector()
 total = 0
 
 # loop over frames from the video streams
@@ -39,12 +37,10 @@ while True:
 #	cv2.imshow("visible", visibleEdge)
 
 	thermal = webcam.read()
-#	thermal = imutils.resize(thermal, width = 320)
 	thermal = imutils.resize(thermal, width = 160)
 	thermal = cv2.copyMakeBorder(thermal, 60, 60, 80, 80,cv2.BORDER_CONSTANT)
 
 	thermal = np.uint8(thermal/2.)
-#	visible[60:180, 80:240,:]=thermal
 	thermal[visibleEdge != 0] = (0, 255, 0)
 
 	cv2.imshow("composite image", thermal)
